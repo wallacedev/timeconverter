@@ -12,6 +12,10 @@ public class StringTimeConverterTest{
     public void testOutputGenerator() {
 		assertEquals("00:16 – FIRST_HALF", stringTimeConverter.outputGenerator(new Time(0,15,987), "FIRST_HALF"));
 		assertEquals("00:15 – FIRST_HALF", stringTimeConverter.outputGenerator(new Time(0,15,209), "FIRST_HALF"));
+		assertEquals("45:00 +00:00 – FIRST_HALF", stringTimeConverter.outputGenerator(new Time(45,0,1), "FIRST_HALF"));
+		assertEquals("45:00 +01:16 – FIRST_HALF", stringTimeConverter.outputGenerator(new Time(46,15,752), "FIRST_HALF"));
+		assertEquals("90:00 +00:01 – SECOND_HALF", stringTimeConverter.outputGenerator(new Time(90,0,908), "SECOND_HALF"));
+		assertEquals("90:00 +00:00 – FULL_TIME", stringTimeConverter.outputGenerator(new Time(90,0,0), "FULL_TIME"));
 	}
 	
 	@Test

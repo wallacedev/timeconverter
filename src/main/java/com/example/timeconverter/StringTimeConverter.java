@@ -10,15 +10,14 @@ public class StringTimeConverter {
 	}
 	
 	public String convert (String arg) {
-		
-		checkString(arg);
-		
-		this.period = this.findPeriod(arg);
-		
-		this.time = this.findTime(arg);
-		
-		String output = this.outputGenerator(this.time, this.period);
-		
+		String output;
+		try{
+			this.period = this.findPeriod(arg);
+			this.time = this.findTime(arg);
+			output = this.outputGenerator(this.time, this.period);
+		}catch (Exception e) {
+			output = "INVALID";
+		}	
 		return output;
 	}
 
@@ -37,18 +36,30 @@ public class StringTimeConverter {
 		}
 		
 		Time additionalTime = new Time();
+		boolean thereIsAdditionalTime = false;
 		
 		//first half
-		// || Period.H2.equals(period) || Period.FT.equals(period) ) {
-		if(Period.H1.equals(period) && time.getMinute().equals(45)) {
+		if(Period.H1.getPeriod().equals(period) && time.getMinute()>=45) {
 			additionalTime.setMinute(time.getMinute()-45);
 			additionalTime.setSecond(time.getSecond());
+			time.setMinute(45);
+			time.setSecond(0);
+			thereIsAdditionalTime = true;
 		}
 		//second half
-		else()
+		else if((Period.H2.getPeriod().equals(period) || Period.FT.getPeriod().equals(period)) && time.getMinute()>=90) {
+			additionalTime.setMinute(time.getMinute()-90);
+			additionalTime.setSecond(time.getSecond());
+			time.setMinute(90);
+			time.setSecond(0);
+			thereIsAdditionalTime = true;
+		}
 		
-		
-		return time.toStringShort() + " – " + period;
+		if (thereIsAdditionalTime) {
+			return time.toStringShort() + " +"+additionalTime.toStringShort() + " – " + period;
+		}else {
+			return time.toStringShort() + " – " + period;
+		}	
 	}
 
 	public void checkString(String arg) {
